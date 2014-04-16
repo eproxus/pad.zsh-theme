@@ -1,8 +1,18 @@
 # Get the status of the working tree (copied and modified from git.zsh)
 
+# Checks if current branch is behind of remote
 function git_prompt_behind() {
-  if [[ -n "$(command git rev-list origin/$(current_branch))..HEAD" ]]; then
+  if [[ -n "$(command git rev-list HEAD..origin/$(current_branch) 2> /dev/null)" ]]; then
     echo "$ZSH_THEME_GIT_PROMPT_BEHIND"
+  fi
+}
+
+# Checks if current branch exists on remote
+function git_prompt_remote() {
+  if [[ -n "$(command git show-ref origin/$(current_branch) 2> /dev/null)" ]]; then
+    echo "$ZSH_THEME_GIT_PROMPT_REMOTE_EXISTS"
+  else
+    echo "$ZSH_THEME_GIT_PROMPT_REMOTE_MISSING"
   fi
 }
 
@@ -45,7 +55,10 @@ function git_status {
     add_if $INDEX '^UU'              $ZSH_THEME_GIT_PROMPT_UNMERGED
     add_if $INDEX '^?? '             $ZSH_THEME_GIT_PROMPT_UNTRACKED
 
-    local GIT_STATUS="$(current_branch)$(git_prompt_behind)$(git_prompt_ahead)"
+    local GIT_STATUS="$(current_branch)"
+    GIT_STATUS+="$(git_prompt_remote)"
+    GIT_STATUS+="$(git_prompt_behind)"
+    GIT_STATUS+="$(git_prompt_ahead)"
     [[ -n "$STATUS" ]] && GIT_STATUS+=" $STATUS"
 
     echo $GIT_STATUS
@@ -90,6 +103,7 @@ function render_top_bar {
 setprompt () {
     ZSH_THEME_GIT_PROMPT_AHEAD='%{$FG[004]%}↑'
     ZSH_THEME_GIT_PROMPT_BEHIND='%{$FG[001]%}↓'
+    ZSH_THEME_GIT_PROMPT_REMOTE_MISSING='%{$FG[015]%}*'
 
     # Staged
     ZSH_THEME_GIT_PROMPT_STAGED_ADDED='%{$FG[002]%}A'
