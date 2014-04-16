@@ -55,11 +55,12 @@ function git_status {
     add_if $INDEX '^UU'              $ZSH_THEME_GIT_PROMPT_UNMERGED
     add_if $INDEX '^?? '             $ZSH_THEME_GIT_PROMPT_UNTRACKED
 
-    local GIT_STATUS="$(current_branch)"
+    local GIT_STATUS=""
+    [[ -n "$STATUS" ]] && GIT_STATUS+="$STATUS "
     GIT_STATUS+="$(git_prompt_remote)"
     GIT_STATUS+="$(git_prompt_behind)"
     GIT_STATUS+="$(git_prompt_ahead)"
-    [[ -n "$STATUS" ]] && GIT_STATUS+=" $STATUS"
+    GIT_STATUS+="%{$FG[011]%}$(current_branch)"
 
     echo $GIT_STATUS
 }
@@ -71,7 +72,7 @@ function vcs_status {
     elif [[ -n "$(current_branch)" ]]; then
         STATUS=$(git_status)
     fi
-    [[ -n "$STATUS" ]] && echo "%{$BG[019]$FG[011]%} $STATUS "
+    [[ -n "$STATUS" ]] && echo "%{$BG[019]%} $STATUS "
 }
 
 function render_top_bar {
