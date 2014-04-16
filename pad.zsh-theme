@@ -1,5 +1,11 @@
 # Get the status of the working tree (copied and modified from git.zsh)
 
+function git_prompt_behind() {
+  if [[ -n "$(command git rev-list origin/$(current_branch))..HEAD" ]]; then
+    echo "$ZSH_THEME_GIT_PROMPT_BEHIND"
+  fi
+}
+
 function add_if {
     if $(echo "$1" | grep $2 &> /dev/null); then
         STATUS+=$3
@@ -39,7 +45,7 @@ function git_status {
     add_if $INDEX '^UU'              $ZSH_THEME_GIT_PROMPT_UNMERGED
     add_if $INDEX '^?? '             $ZSH_THEME_GIT_PROMPT_UNTRACKED
 
-    local GIT_STATUS="$(current_branch)$(git_prompt_ahead)"
+    local GIT_STATUS="$(current_branch)$(git_prompt_behind)$(git_prompt_ahead)"
     [[ -n "$STATUS" ]] && GIT_STATUS+=" $STATUS"
 
     echo $GIT_STATUS
@@ -83,6 +89,7 @@ function render_top_bar {
 
 setprompt () {
     ZSH_THEME_GIT_PROMPT_AHEAD='%{$FG[004]%}↑'
+    ZSH_THEME_GIT_PROMPT_BEHIND='%{$FG[001]%}↓'
 
     # Staged
     ZSH_THEME_GIT_PROMPT_STAGED_ADDED='%{$FG[002]%}A'
