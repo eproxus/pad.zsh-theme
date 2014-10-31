@@ -140,9 +140,9 @@ setprompt () {
 %{$FG[003]%}»%{$FX[reset]%} '
 
     # display exitcode on the right when >0
-    return_code="%(?..%{$FG[001]%}⌗%?%{$FX[reset]%})"
+    return_code="%(?..%{$FG[001]%}⌗%?)"
 
-    RPROMPT=' $return_code %{$FG[019]%}${LAST_EXEC_TIME}s'
+    RPROMPT=' $return_code %{$FG[019]%}${LAST_EXEC_TIME}s%{$FX[reset]%}'
 }
 
 setopt prompt_subst
