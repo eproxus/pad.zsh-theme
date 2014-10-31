@@ -1,3 +1,21 @@
+# Exec time
+
+export LAST_EXEC_TIME="0"
+
+function pad_hook_preexec {
+    timer=${timer:-$SECONDS}
+}
+
+function pad_hook_precmd {
+    if [ $timer ]; then
+        export LAST_EXEC_TIME="$(($SECONDS - $timer))"
+        unset timer
+    fi
+}
+
+add-zsh-hook preexec pad_hook_preexec
+add-zsh-hook precmd pad_hook_precmd
+
 # Get the status of the working tree (copied and modified from git.zsh)
 
 # Checks if current branch is behind of remote
@@ -124,7 +142,7 @@ setprompt () {
     # display exitcode on the right when >0
     return_code="%(?..%{$FG[001]%}⌗%?%{$FX[reset]%})"
 
-    RPROMPT=' $return_code'
+    RPROMPT=' $return_code %{$FG[019]%}${LAST_EXEC_TIME}s'
 }
 
 setopt prompt_subst
