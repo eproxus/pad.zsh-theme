@@ -41,8 +41,8 @@ function add_if {
 }
 
 function svn_status {
-    local ROOT=`svn info | sed -n 's/^Working Copy Root Path: //p'`
-    local INDEX="$(svn status $ROOT)"
+    local ROOT="$(svn info | sed -n 's/^Working Copy Root Path: //p')"
+    local INDEX="$(svn status "$ROOT")"
     local STATUS=""
 
     add_if $INDEX '^A'               $ZSH_THEME_GIT_PROMPT_STAGED_ADDED
@@ -53,10 +53,10 @@ function svn_status {
     add_if $INDEX '^!'               $ZSH_THEME_GIT_PROMPT_DELETED
     add_if $INDEX '^?'               $ZSH_THEME_GIT_PROMPT_UNTRACKED
 
-    local SVN_STATUS=$(svn_get_branch_name)
-    [[ -n "$STATUS" ]] && SVN_STATUS+=" $STATUS"
+    [[ -n "$STATUS" ]] && STATUS+=" "
+    STATUS+="%{$FG[011]%}$(svn_get_branch_name)"
 
-    echo $SVN_STATUS
+    echo $STATUS
 }
 
 function git_status {
