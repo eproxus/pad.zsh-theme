@@ -6,6 +6,8 @@ function pad_hook_preexec {
     timer=${timer:-$SECONDS}
 }
 
+autoload -U add-zsh-hook
+
 function pad_hook_precmd {
     if [ $timer ]; then
         export LAST_EXEC_TIME="$(($SECONDS - $timer))"
@@ -17,6 +19,13 @@ add-zsh-hook preexec pad_hook_preexec
 add-zsh-hook precmd pad_hook_precmd
 
 # Get the status of the working tree (copied and modified from git.zsh)
+
+# Outputs if current branch is ahead of remote
+function git_prompt_ahead() {
+  if [[ -n "$(command git rev-list origin/$(current_branch)..HEAD 2> /dev/null)" ]]; then
+    echo "$ZSH_THEME_GIT_PROMPT_AHEAD"
+  fi
+}
 
 # Checks if current branch is behind of remote
 function git_prompt_behind() {
@@ -149,5 +158,4 @@ setopt prompt_subst
 
 setprompt
 
-autoload -U add-zsh-hook
-add-zsh-hook precmd  render_top_bar
+add-zsh-hook precmd render_top_bar
