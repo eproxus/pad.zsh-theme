@@ -69,27 +69,7 @@ function svn_status {
 }
 
 function git_status {
-    local INDEX="$(git status --porcelain 2> /dev/null)"
-    local STATUS=""
-    # Staged
-    add_if $INDEX '^A'               $ZSH_THEME_GIT_PROMPT_STAGED_ADDED
-    add_if $INDEX '^M'               $ZSH_THEME_GIT_PROMPT_STAGED_MODIFIED
-    add_if $INDEX '^R'               $ZSH_THEME_GIT_PROMPT_STAGED_RENAMED
-    add_if $INDEX '^D  '             $ZSH_THEME_GIT_PROMPT_STAGED_DELETED
-    # Non-staged
-    add_if $INDEX '^\(.M\|AM\| T\) ' $ZSH_THEME_GIT_PROMPT_MODIFIED
-    add_if $INDEX '^ D '             $ZSH_THEME_GIT_PROMPT_DELETED
-    add_if $INDEX '^UU'              $ZSH_THEME_GIT_PROMPT_UNMERGED
-    add_if $INDEX '^?? '             $ZSH_THEME_GIT_PROMPT_UNTRACKED
-
-    local GIT_STATUS=""
-    [[ -n "$STATUS" ]] && GIT_STATUS+="$STATUS "
-    GIT_STATUS+="$(git_prompt_remote)"
-    GIT_STATUS+="$(git_prompt_behind)"
-    GIT_STATUS+="$(git_prompt_ahead)"
-    GIT_STATUS+="%{$FG[011]%}$(current_branch)"
-
-    echo $GIT_STATUS
+    echo "$(gitHUD zsh)%{$BG[019]%}"
 }
 
 function vcs_status {

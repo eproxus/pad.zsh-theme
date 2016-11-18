@@ -12,6 +12,7 @@ Pad currently requires:
 * [oh-my-zsh][oh-my-zsh]
 * The [Base 16][base-16] color scheme
 * The [Base 16 Shell][base-16-shell] fix
+* [gitHUD][githud] for display the Git status bar
 
 Installation
 ------------
@@ -35,7 +36,15 @@ In your `~/.zshrc`, set your theme to Pad:
 ZSH_THEME="pad"
 ```
 
+Configuration
+-------------
+
+A suggested gitHUD RC file is included in this repository. Symlink or copy it
+to `~/.githudrc`.
+
+
 
 [oh-my-zsh]: https://github.com/robbyrussell/oh-my-zsh "Oh My Zsh"
 [base-16]: https://github.com/chriskempson/base16 "Base 16 Color Scheme"
 [base-16-shell]: https://github.com/chriskempson/base16-shell "Base 16 Shell"
+[githud]: https://github.com/gbataille/gitHUD "gitHUD"
