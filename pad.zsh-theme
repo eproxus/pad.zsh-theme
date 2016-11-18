@@ -94,10 +94,10 @@ function git_status {
 
 function vcs_status {
     local STATUS
-    if [[ -n "$(svn_get_branch_name)" ]]; then
-        STATUS=$(svn_status)
-    elif [[ -n "$(current_branch)" ]]; then
+    if [[ -n "$(current_branch)" ]]; then
         STATUS=$(git_status)
+    elif [[ -n "$(svn_get_branch_name)" ]]; then
+        STATUS=$(svn_status)
     fi
     [[ -n "$STATUS" ]] && echo "%{$BG[019]%} $STATUS "
 }
