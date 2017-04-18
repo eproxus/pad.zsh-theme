@@ -18,31 +18,6 @@ function pad_hook_precmd {
 add-zsh-hook preexec pad_hook_preexec
 add-zsh-hook precmd pad_hook_precmd
 
-# Get the status of the working tree (copied and modified from git.zsh)
-
-# Outputs if current branch is ahead of remote
-function git_prompt_ahead() {
-  if [[ -n "$(command git rev-list origin/$(current_branch)..HEAD 2> /dev/null)" ]]; then
-    echo "$ZSH_THEME_GIT_PROMPT_AHEAD"
-  fi
-}
-
-# Checks if current branch is behind of remote
-function git_prompt_behind() {
-  if [[ -n "$(command git rev-list HEAD..origin/$(current_branch) 2> /dev/null)" ]]; then
-    echo "$ZSH_THEME_GIT_PROMPT_BEHIND"
-  fi
-}
-
-# Checks if current branch exists on remote
-function git_prompt_remote() {
-  if [[ -n "$(command git show-ref origin/$(current_branch) 2> /dev/null)" ]]; then
-    echo "$ZSH_THEME_GIT_PROMPT_REMOTE_EXISTS"
-  else
-    echo "$ZSH_THEME_GIT_PROMPT_REMOTE_MISSING"
-  fi
-}
-
 function add_if {
     if $(echo "$1" | grep $2 &> /dev/null); then
         STATUS+=$3
@@ -109,22 +84,6 @@ function render_top_bar {
 }
 
 setprompt () {
-    ZSH_THEME_GIT_PROMPT_AHEAD='%{$FG[004]%}↑'
-    ZSH_THEME_GIT_PROMPT_BEHIND='%{$FG[001]%}↓'
-    ZSH_THEME_GIT_PROMPT_REMOTE_MISSING='%{$FG[015]%}*'
-
-    # Staged
-    ZSH_THEME_GIT_PROMPT_STAGED_ADDED='%{$FG[002]%}A'
-    ZSH_THEME_GIT_PROMPT_STAGED_MODIFIED='%{$FG[002]%}M'
-    ZSH_THEME_GIT_PROMPT_STAGED_RENAMED='%{$FG[002]%}R'
-    ZSH_THEME_GIT_PROMPT_STAGED_DELETED='%{$FG[002]%}D'
-
-    # Not-staged
-    ZSH_THEME_GIT_PROMPT_UNTRACKED='%{$FG[001]%}?'
-    ZSH_THEME_GIT_PROMPT_MODIFIED='%{$FG[001]%}M'
-    ZSH_THEME_GIT_PROMPT_DELETED='%{$FG[001]%}D'
-    ZSH_THEME_GIT_PROMPT_UNMERGED='%{$FG[001]%}UU'
-
     PROMPT='${(e)TOP_BAR}
 %{$FG[003]%}»%{$FX[reset]%} '
 
