@@ -12,7 +12,8 @@ Pad currently requires:
 * [oh-my-zsh][oh-my-zsh]
 * The [Base 16][base-16] color scheme
 * The [Base 16 Shell][base-16-shell] fix
-* [gitHUD][githud] for display the Git status bar
+* [gitHUD][githud] to display the Git status bar
+* [hg-prompt][hg-prompt] to display the Mercurial status bar
 
 Installation
 ------------
@@ -48,3 +49,4 @@ to `~/.githudrc`.
 [base-16]: https://github.com/chriskempson/base16 "Base 16 Color Scheme"
 [base-16-shell]: https://github.com/chriskempson/base16-shell "Base 16 Shell"
 [githud]: https://github.com/gbataille/gitHUD "gitHUD"
+[hg-prompt]: https://bitbucket.org/sjl/hg-prompt/src "hg-prompt"

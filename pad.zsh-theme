@@ -44,7 +44,12 @@ function svn_status {
 }
 
 function git_status {
-    echo "$(gitHUD zsh)%{$BG[019]%}"
+    echo "$(gitHUD zsh)"
+}
+
+function hg_status {
+    hg prompt --angle-brackets \
+        "$FX[bold]$FG[003]<branch>:<bookmark>"
 }
 
 function vcs_status {
@@ -53,6 +58,8 @@ function vcs_status {
         STATUS=$(git_status)
     elif [[ -n "$(svn_get_branch_name)" ]]; then
         STATUS=$(svn_status)
+    elif [ $(in_hg) ]; then
+        STATUS=$(hg_status)
     fi
     [[ -n "$STATUS" ]] && echo "%{$BG[019]%} $STATUS "
 }
