@@ -44,7 +44,7 @@ setprompt () {
 %F{3}»%f%k '
 
     # display exitcode on the right when >0
-    local return_code="%(?..%F{1}⌗%?)"
+    return_code="%(?..%F{1}⌗%?)"
 
     RPROMPT=' ${return_code} %F{19}${LAST_EXEC_TIME}s%f%k'
 }
