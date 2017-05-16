@@ -3,7 +3,7 @@ Pad
 
 Pad is a simple, concise and beautiful theme for Zsh.
 
-![](screenshot.png | width=100)
+<img src="https://raw.githubusercontent.com/eproxus/pad.zsh-theme/master/screenshot.png" alt="screenshot.png" width="600">
 
 Features:
 
