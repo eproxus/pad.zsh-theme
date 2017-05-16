@@ -1,5 +1,3 @@
-# Exec time
-
 export LAST_EXEC_TIME="0"
 
 function pad_hook_preexec {
@@ -18,57 +16,12 @@ function pad_hook_precmd {
 add-zsh-hook preexec pad_hook_preexec
 add-zsh-hook precmd pad_hook_precmd
 
-function add_if {
-    if $(echo "$1" | grep $2 &> /dev/null); then
-        STATUS+=$3
-    fi
-}
-
-function svn_status {
-    local ROOT="$(svn info | sed -n 's/^Working Copy Root Path: //p')"
-    local INDEX="$(svn status "$ROOT")"
-    local STATUS=""
-
-    add_if $INDEX '^A'               $ZSH_THEME_GIT_PROMPT_STAGED_ADDED
-    add_if $INDEX '^M'               $ZSH_THEME_GIT_PROMPT_STAGED_MODIFIED
-    add_if $INDEX '^R'               $ZSH_THEME_GIT_PROMPT_STAGED_RENAMED
-    add_if $INDEX '^D'               $ZSH_THEME_GIT_PROMPT_STAGED_DELETED
-
-    add_if $INDEX '^!'               $ZSH_THEME_GIT_PROMPT_DELETED
-    add_if $INDEX '^?'               $ZSH_THEME_GIT_PROMPT_UNTRACKED
-
-    [[ -n "$STATUS" ]] && STATUS+=" "
-    STATUS+="%{$FG[011]%}$(svn_get_branch_name)"
-
-    echo $STATUS
-}
-
-function git_status {
-    echo "$(gitHUD zsh)"
-}
-
-function hg_status {
-    hg prompt --angle-brackets \
-        "$FX[bold]$FG[003]<branch>:<bookmark>"
-}
-
-function vcs_status {
-    local STATUS
-    if [[ -n "$(current_branch)" ]]; then
-        STATUS=$(git_status)
-    elif [[ -n "$(svn_get_branch_name)" ]]; then
-        STATUS=$(svn_status)
-    elif [ $(in_hg) ]; then
-        STATUS=$(hg_status)
-    fi
-    [[ -n "$STATUS" ]] && echo "%{$BG[019]%} $STATUS "
-}
-
 function render_top_bar {
     local ZERO='%([BSUbfksu]|([FB]|){*})'
 
     # Top right
-    local TOP_RIGHT="$(vcs_status)"
+    local TOP_RIGHT="${vcs_info_msg_0_}"
+    # local TOP_RIGHT=" foo "
     local RIGHT_WIDTH=${#${(S%%)TOP_RIGHT//$~ZERO/}}
 
     # Top left
@@ -76,29 +29,39 @@ function render_top_bar {
     (( PWD_MAX_LEN = $COLUMNS - $RIGHT_WIDTH - 3 ))
     local PWD_PATH="%$PWD_MAX_LEN<...<${PWD/#$HOME/~}%<<"
     [[ "${PWD_PATH:h}" != "." ]] && local PREFIX="${PWD_PATH:h}/"
-    local TOP_LEFT="%{$FG[008]%}$PREFIX%{$FG[004]%}${PWD_PATH:t}"
+    local TOP_LEFT="%F{8}$PREFIX%F{4}${PWD_PATH:t}"
     local LEFT_WIDTH=${#${(S%%)TOP_LEFT//$~ZERO/}}
 
     # Middle (fill)
     local FILL="\${(l:(($COLUMNS - ($LEFT_WIDTH + $RIGHT_WIDTH + 2))):: :)}"
 
     # Whole bar
-    TOP_BAR="%{$BG[018]%} "
-    TOP_BAR+="$TOP_LEFT%{$FX[reset]%}"
-    TOP_BAR+="%{$BG[018]%}$FILL"
-    TOP_BAR+="$TOP_RIGHT%{$FX[reset]%}"
-    TOP_BAR+="%{$BG[018]%} %{$FX[reset]%}"
+    TOP_BAR="%K{18} $TOP_LEFT$FILL%K{19}$TOP_RIGHT%K{18} $k"
 }
 
 setprompt () {
     PROMPT='${(e)TOP_BAR}
-%{$FG[003]%}»%{$FX[reset]%} '
+%F{3}»%f%k '
 
     # display exitcode on the right when >0
-    return_code="%(?..%{$FG[001]%}⌗%?)"
+    local return_code="%(?..%F{1}⌗%?)"
 
-    RPROMPT=' $return_code %{$FG[019]%}${LAST_EXEC_TIME}s%{$FX[reset]%}'
+    RPROMPT=' ${return_code} %F{19}${LAST_EXEC_TIME}s%f%k'
 }
+
+autoload -Uz vcs_info
+add-zsh-hook precmd vcs_info
+
+zstyle ':vcs_info:*' enable git svn hg
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' check-for-staged-changes true
+zstyle ':vcs_info:hg*:*' get-bookmarks true
+zstyle ':vcs_info:*' stagedstr " %F{green}S"
+zstyle ':vcs_info:*' unstagedstr " %F{red}U"
+zstyle ':vcs_info:*:*' formats " \
+%F{8}%s: \
+%{%F{3}%B%}%b%{%%b%f%}\
+%u%c%m "
 
 setopt prompt_subst
 

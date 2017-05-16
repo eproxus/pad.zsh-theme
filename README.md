@@ -1,52 +1,35 @@
 Pad
 ===
 
-Pad is a simple, concise and beautiful theme for [oh-my-zsh][oh-my-zsh].
+Pad is a simple, concise and beautiful theme for Zsh.
 
 ![Screenshot of Pad](screenshot.png "Pad Screenshot")
+
+Features:
+
+* Double line prompt with visible divider between commands
+* Highlight of the current workind directory
+* Shortening of long paths that don't fit
+* Version control information using Zsh's [`vcs_info`][vcs_info]
+* Printing of error codes if non-zero
+* Subtle printing of command execution time
 
 Requirements
 ------------
 
-Pad currently requires:
-* [oh-my-zsh][oh-my-zsh]
-* The [Base 16][base-16] color scheme
-* The [Base 16 Shell][base-16-shell] fix
-* [gitHUD][githud] to display the Git status bar
-* [hg-prompt][hg-prompt] to display the Mercurial status bar
+Pad is made for 256-color shells and works best with the [Base 16 Shell][base-16-shell] Tomorrow Night color scheme.
 
 Installation
 ------------
 
-Clone this repository:
-
-```sh
-git clone https://github.com/eproxus/pad.zsh-theme.git
-```
-
-Run the install script, which will link this theme into your oh-my-zsh
-installation:
-
-```sh
-./install.sh
-```
-
-In your `~/.zshrc`, set your theme to Pad:
-
-```sh
-ZSH_THEME="pad"
-```
+It is recommended to use a plugin manager or framework for Zsh. Installation instructions for various frameworks can be found [here][installation].
 
 Configuration
 -------------
 
-A suggested gitHUD RC file is included in this repository. Symlink or copy it
-to `~/.githudrc`.
+Currently, no configuration for the theme itself exists. You can configure the
+VCS prompt via [`vcs_info`]'s own options.
 
-
-
-[oh-my-zsh]: https://github.com/robbyrussell/oh-my-zsh "Oh My Zsh"
-[base-16]: https://github.com/chriskempson/base16 "Base 16 Color Scheme"
 [base-16-shell]: https://github.com/chriskempson/base16-shell "Base 16 Shell"
-[githud]: https://github.com/gbataille/gitHUD "gitHUD"
-[hg-prompt]: https://bitbucket.org/sjl/hg-prompt/src "hg-prompt"
+[vcs_info]: http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Version-Control-Information "Zsh vcs_info"
+[installation]: https://github.com/unixorn/awesome-zsh-plugins#installation "Zsh plugin installation"
