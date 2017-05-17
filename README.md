@@ -28,7 +28,7 @@ Configuration
 -------------
 
 Currently, no configuration for the theme itself exists. You can configure the
-VCS prompt via [`vcs_info`]'s own options.
+VCS prompt via [`vcs_info`][vcs_info]'s own options after the theme is loaded.
 
 [base-16-shell]: https://github.com/chriskempson/base16-shell "Base 16 Shell"
 [vcs_info]: http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Version-Control-Information "Zsh vcs_info"
