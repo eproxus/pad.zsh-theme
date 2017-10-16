@@ -41,7 +41,7 @@ function render_top_bar {
 
 setprompt () {
     PROMPT='${(e)TOP_BAR}
-%F{3}»%f%k '
+%k%F{3}»%f%k '
 
     # display exitcode on the right when >0
     return_code="%(?..%F{1}⌗%?)"
